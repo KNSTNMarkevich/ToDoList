@@ -10,8 +10,37 @@ const UNCHECK = "fa-circle-thin";
 const LINE_THROUGH = "lineThrough";
 
 // Variables
-let LIST = [];
-let id = 0;
+let LIST, id;
+
+//get item from localstorage 
+let data = localStorage.getItem("TODO")
+
+//check if data is not empty
+if(data){
+    LIST = JSON.parse(data);
+    id = LIST.length; // set the id to the last one in the child
+    loadList(LIST); // load the list to the user interface
+}else{
+    //if data isn't epmty
+    LIST = [];
+    id = 0;
+}
+
+//load items to the users interface
+function loadList(array){
+    array.forEach(function(item){
+        addToDo(item.name, item.id, item.done, item.trash);
+    })
+}
+
+//CLEAR LOCALE STORAGE
+clear.addEventListener("click", function(){
+    localeStorage.clear();
+    location.reload();
+});
+
+// //add item to localstorage
+// localStorage.setItem("TODO", JSON.stringify(LIST));
 
 // Show todays date
 const options = {weekday: "long", month: "short", day:"numeric"};
@@ -54,6 +83,9 @@ document.addEventListener("keyup",function(even){
                 done: false,
                 trash: false
             });
+            
+            //add item to localstorage (this code must be added where the LIST array - updated)
+            localStorage.setItem("TODO", JSON.stringify(LIST));
 
             id++
         }
@@ -90,4 +122,8 @@ list.addEventListener("click", function(event){
     }else if(elementJob == "delete"){
         removeToDo(element)
     }
-})
+
+    //add item to localstorage (this code must be added where the LIST array - updated)
+    localStorage.setItem("TODO", JSON.stringify(LIST));
+
+});
